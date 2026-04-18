@@ -8,7 +8,6 @@ name = "cwilson"
 description = "Dev workstation — mesh networking, k8s, Rust/Go/Python"
 
 # ─── Nix Packages ──────────────────────────────────────────────────────────
-# These go into home.packages (managed by nix, declarative)
 
 [packages]
 nix = [
@@ -43,14 +42,12 @@ nix = [
   "yubikey-manager", "libfido2", "pam_u2f",
 ]
 
-# Homebrew formulae (things that don't work well in nix on macOS)
 brews = [
   "rustup", "esptool",
   "python@3.11", "python@3.12", "python@3.14",
   "qemu", "podman", "ollama", "weasyprint",
 ]
 
-# Homebrew casks (GUI apps)
 casks = [
   "beeper", "brave-browser", "claude", "claude-code",
   "docker", "drawio", "firefox", "iterm2", "jiggler",
@@ -58,10 +55,21 @@ casks = [
   "spotify", "swama", "visual-studio-code", "vlc", "wezterm",
 ]
 
-# Homebrew taps
 taps = [
   "hashicorp/tap", "fluxcd/tap", "styrene-lab/tap",
 ]
+
+# ─── Kitty ─────────────────────────────────────────────────────────────────
+# Files in kitty/ are copied to ~/.config/kitty/
+
+[kitty]
+font = "IBM Plex Mono"
+font_size = 13.0
+theme = "alpharius"
+window_padding = 8
+scrollback_lines = 10000
+macos_option_as_alt = true
+macos_quit_when_last_window_closed = true
 
 # ─── Shell ─────────────────────────────────────────────────────────────────
 
@@ -69,7 +77,6 @@ taps = [
 default = "bash"
 
 [shell.aliases]
-clod = "claude --dangerously-skip-permissions"
 ls = "eza --icons --grid --group-directories-first"
 
 [shell.env]
