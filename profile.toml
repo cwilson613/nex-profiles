@@ -1,0 +1,109 @@
+# nex profile — https://nex.styrene.io
+# Apply this profile to a new Mac:
+#   nex init
+#   nex profile apply cwilson613/nex-profiles
+
+[meta]
+name = "cwilson"
+description = "Dev workstation — mesh networking, k8s, Rust/Go/Python"
+
+# ─── Nix Packages ──────────────────────────────────────────────────────────
+# These go into home.packages (managed by nix, declarative)
+
+[packages]
+nix = [
+  # Shell & terminal
+  "bash", "zsh", "zsh-syntax-highlighting", "tmux", "btop", "eza",
+  "ripgrep", "jq", "yq-go", "tree", "dos2unix", "wget", "p7zip",
+  "watch", "asciinema",
+
+  # Dev tools
+  "git", "gh", "jj", "neovim", "vim", "just", "cmake",
+  "go", "nodejs", "pnpm", "uv", "pipx",
+  "protobuf", "nasm", "zig", "d2",
+
+  # Cloud & infra
+  "awscli2", "ansible", "opentofu", "sops", "vault",
+
+  # Networking
+  "nmap", "openssh", "mosquitto", "mqttui", "speedtest-cli",
+  "i2pd", "whois", "wakeonlan", "sshpass",
+
+  # Documents & media
+  "pandoc", "ffmpeg", "poppler", "mdbook", "zola",
+
+  # Misc
+  "gnupg", "crane",
+
+  # Kubernetes
+  "kubectl", "kubernetes-helm", "kubectx", "kind", "krew",
+  "clusterctl", "argocd", "fluxcd", "talosctl",
+
+  # YubiKey
+  "yubikey-manager", "libfido2", "pam_u2f",
+]
+
+# Homebrew formulae (things that don't work well in nix on macOS)
+brews = [
+  "rustup", "esptool",
+  "python@3.11", "python@3.12", "python@3.14",
+  "qemu", "podman", "ollama", "weasyprint",
+]
+
+# Homebrew casks (GUI apps)
+casks = [
+  "beeper", "brave-browser", "claude", "claude-code",
+  "docker", "drawio", "firefox", "iterm2", "jiggler",
+  "kitty", "libreoffice", "obsidian", "podman-desktop",
+  "spotify", "swama", "visual-studio-code", "vlc", "wezterm",
+]
+
+# Homebrew taps
+taps = [
+  "hashicorp/tap", "fluxcd/tap", "styrene-lab/tap",
+]
+
+# ─── Shell ─────────────────────────────────────────────────────────────────
+
+[shell]
+default = "bash"
+
+[shell.aliases]
+clod = "claude --dangerously-skip-permissions"
+ls = "eza --icons --grid --group-directories-first"
+
+[shell.env]
+LANG = "en_US.UTF-8"
+EDITOR = "nvim"
+HISTTIMEFORMAT = "%F %T - "
+
+# ─── Git ───────────────────────────────────────────────────────────────────
+
+[git]
+name = "Chris"
+email = "72043878+cwilson613@users.noreply.github.com"
+default_branch = "main"
+pull_rebase = true
+push_auto_setup_remote = true
+
+# ─── macOS Preferences ────────────────────────────────────────────────────
+
+[macos]
+show_all_extensions = true
+show_hidden_files = true
+auto_capitalize = false
+auto_correct = false
+natural_scroll = false
+tap_to_click = true
+three_finger_drag = true
+dock_autohide = true
+dock_show_recents = false
+
+[macos.fonts]
+nerd = ["jetbrains-mono"]
+families = ["ibm-plex"]
+
+# ─── Security ──────────────────────────────────────────────────────────────
+
+[security]
+touchid_sudo = true
