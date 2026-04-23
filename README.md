@@ -168,6 +168,17 @@ When a profile uses `extends`, the base profile is applied first and the overlay
 - **profileExtra / initExtra**: overlay content is appended after base content
 - **History settings**: overlay values override base values
 
+### Git identity inheritance
+
+**Important:** The `[git]` section in a base profile sets `git config --global user.name` and `user.email`. If you extend someone else's profile, their git identity is applied first. You **must** override `[git]` in your own overlay, or you'll unknowingly commit as the base profile's author.
+
+```toml
+# Your overlay — always include this
+[git]
+name = "Your Name"
+email = "your-email@example.com"
+```
+
 ### Keeping secrets out
 
 Public profiles should only contain non-sensitive config. Machine-specific or private config (SSH keys, kubeconfig paths, work-specific aliases) goes in a private overlay:
