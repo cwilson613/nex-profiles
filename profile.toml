@@ -76,6 +76,28 @@ macos_quit_when_last_window_closed = true
 [shell]
 default = "bash"
 
+# Login shell — sourced once by .bash_profile
+profileExtra = """
+# Homebrew (macOS — must come before nix so nix PATH wins)
+if [ -f /opt/homebrew/bin/brew ]; then
+    eval "$(/opt/homebrew/bin/brew shellenv)"
+elif [ -f /home/linuxbrew/.linuxbrew/bin/brew ]; then
+    eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+fi
+
+# Cargo/Rust
+[ -f "$HOME/.cargo/env" ] && . "$HOME/.cargo/env"
+"""
+
+# Interactive shell — sourced by .bashrc
+initExtra = """
+# Pipefail for safer scripting
+set -o pipefail
+
+# Optional tools — add to PATH only if installed
+[ -d "$HOME/.lmstudio/bin" ] && export PATH="$PATH:$HOME/.lmstudio/bin"
+"""
+
 [shell.aliases]
 ls = "eza --icons --grid --group-directories-first"
 
@@ -83,6 +105,9 @@ ls = "eza --icons --grid --group-directories-first"
 LANG = "en_US.UTF-8"
 EDITOR = "nvim"
 HISTTIMEFORMAT = "%F %T - "
+HISTCONTROL = "ignoreboth:erasedups"
+HISTSIZE = "50000"
+HISTFILESIZE = "50000"
 
 # ─── Git ───────────────────────────────────────────────────────────────────
 

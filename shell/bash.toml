@@ -1,14 +1,32 @@
 # shell/bash — bash as default shell
 #
 # Modern bash (5.x from nix, not macOS 3.2), sensible defaults,
-# history config, completions.
+# history config, completions, Homebrew/Cargo PATH setup.
 
 [fragment]
 name        = "bash"
-description = "Bash 5.x as default shell with completions and history config"
+description = "Bash 5.x as default shell with completions, history, and PATH setup"
 
 [shell]
 default = "bash"
+
+# Login shell init (Homebrew, Cargo)
+profileExtra = """
+# Homebrew
+if [ -f /opt/homebrew/bin/brew ]; then
+    eval "$(/opt/homebrew/bin/brew shellenv)"
+elif [ -f /home/linuxbrew/.linuxbrew/bin/brew ]; then
+    eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+fi
+
+# Cargo/Rust
+[ -f "$HOME/.cargo/env" ] && . "$HOME/.cargo/env"
+"""
+
+# Interactive shell init
+initExtra = """
+set -o pipefail
+"""
 
 [packages]
 nix = [
