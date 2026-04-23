@@ -1,14 +1,19 @@
-# nex community base profile — macOS
+# Example: Mac developer workstation (composed profile)
 #
-# Opinionated defaults for a developer Mac. Extend this in your
-# personal or machine-specific profile to layer on private config.
+# This is what you get when you compose:
+#   core/essentials + platform/macos + shell/bash + role/dev
 #
-# Usage:
-#   nex profile apply cwilson613/nex-profiles/mac
+# Use this as a reference for building your own profile.
 
 [meta]
-name        = "mac"
-description = "Community macOS base — developer-oriented, opinionated defaults"
+name        = "mac-dev"
+description = "Example — Mac developer workstation composed from fragments"
+compose = [
+  "core/essentials",
+  "platform/macos",
+  "shell/bash",
+  "role/dev",
+]
 
 # ─── Packages ────────────────────────────────────────────────────────────
 
