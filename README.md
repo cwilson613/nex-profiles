@@ -2,50 +2,47 @@
 
 Composable profile fragments for [nex](https://nex.styrene.io). Mix and match to build your system config.
 
-## Fragments
+## Quick start
 
-Fragments are the atoms of a nex profile. Each one handles a single concern. Compose them in your `profile.toml` and nex merges everything together.
+```sh
+# Install nex
+curl -fsSL https://nex.styrene.io/install.sh | sh
 
-| Category | Fragments | Description |
-|----------|-----------|-------------|
-| **core** | `essentials` | CLI tools, GNU userland, git defaults — the stuff every machine needs |
-| **platform** | `macos`, `linux` | OS-level defaults (system prefs, networking, nix settings) |
-| **desktop** | `cosmic`, `gnome`, `kde`, `hyprland` | Desktop environment config (Linux only) |
-| **gpu** | `amd`, `nvidia`, `intel` | GPU drivers, Vulkan, hardware acceleration (Linux only) |
-| **audio** | `pipewire`, `pulseaudio` | Audio backend config (Linux only) |
-| **shell** | `bash`, `zsh`, `fish` | Default shell, completions, history |
-| **role** | `dev`, `gaming`, `server`, `edge` | Use-case packages and services |
+# Bootstrap (installs Nix, Homebrew, Xcode CLT, scaffolds config)
+nex init
 
-## Compose order
+# Apply a profile
+nex profile apply your-user/your-profile
 
-Fragments are merged in the order listed. Later fragments win on scalar values; arrays (like package lists) are concatenated and deduped.
-
-```toml
-# Last writer wins: if core/essentials sets dark_mode = false
-# and platform/macos sets dark_mode = true, you get true.
-compose = [
-  "core/essentials",
-  "platform/macos",
-  "shell/bash",
-  "role/dev",
-]
+# Activate
+nex switch
 ```
 
-## Dependencies
+`nex init` handles the full dependency chain: Nix, Homebrew (which triggers Xcode CLT / git), config scaffolding, and first build. If git is missing after Homebrew, nex fails with a clear message pointing to `xcode-select --install`.
 
-Fragments declare what they require:
+## Two ways to build a profile
+
+### Option 1: Flat profile
+
+A single `profile.toml` with everything inline. Simple, self-contained.
 
 ```toml
-[fragment]
-name     = "cosmic"
-requires = ["platform/linux"]
+[meta]
+name = "my-workstation"
+
+[packages]
+nix = ["git", "vim", "ripgrep"]
+
+[shell.aliases]
+ls = "eza"
+
+[shell.env]
+EDITOR = "nvim"
 ```
 
-Nex validates the dependency graph before applying. If you compose `desktop/cosmic` without `platform/linux`, it errors.
+### Option 2: Compose from fragments
 
-## Examples
-
-**Mac developer workstation:**
+Pick fragments from this repo and compose them. Fragments are merged in order; later entries win on conflicts. Your profile's own inline sections are applied last as overrides.
 
 ```toml
 [meta]
@@ -56,85 +53,64 @@ compose = [
   "shell/bash",
   "role/dev",
 ]
+
+# Overrides applied after all fragments
+[shell.aliases]
+ls = "eza --icons --grid --group-directories-first"
+
+[git]
+name = "Your Name"
+email = "you@example.com"
 ```
 
-**AMD gaming desktop (what nex-gamingpc becomes):**
+## Available fragments
 
-```toml
-[meta]
-name = "gaming-pc"
-compose = [
-  "core/essentials",
-  "platform/linux",
-  "desktop/cosmic",
-  "gpu/amd",
-  "audio/pipewire",
-  "shell/bash",
-  "role/gaming",
-]
-```
+| Category | Fragments | Description |
+|----------|-----------|-------------|
+| **core** | `essentials` | CLI tools, GNU userland, git defaults |
+| **platform** | `macos`, `linux` | OS-level defaults (system prefs, nix settings) |
+| **desktop** | `cosmic`, `gnome`, `kde`, `hyprland` | Desktop environment (Linux only) |
+| **gpu** | `amd`, `nvidia`, `intel` | GPU drivers, Vulkan, hardware acceleration (Linux only) |
+| **audio** | `pipewire`, `pulseaudio` | Audio backend (Linux only) |
+| **shell** | `bash`, `zsh`, `fish` | Default shell, completions, history, PATH setup |
+| **role** | `dev`, `gaming`, `server`, `edge` | Use-case packages and services |
 
-**Headless server:**
+## Merge rules
 
-```toml
-[meta]
-name = "homelab-node"
-compose = [
-  "core/essentials",
-  "platform/linux",
-  "shell/bash",
-  "role/server",
-]
-```
+Fragments and overlays are merged in order. The rules:
 
-**Edge device:**
+| Data type | Rule | Example |
+|-----------|------|---------|
+| Aliases, env vars | Later wins on key conflict, others preserved | Overlay's `ls` overrides fragment's `ls` |
+| Package lists | Union with dedup | Both fragments' packages included |
+| Scalars (git name, macOS prefs) | Last writer wins | Overlay's git name replaces base's |
+| `profileExtra` / `initExtra` | Appended if new content, deduplicated if same | Homebrew PATH from bash fragment preserved, not doubled |
+| History settings | Last writer wins | Overlay's HISTSIZE overrides fragment's |
 
-```toml
-[meta]
-name = "sensor-node"
-compose = [
-  "platform/linux",
-  "shell/bash",
-  "role/edge",
-]
-```
+## Inheritance with `extends`
 
-(Note: edge skips `core/essentials` to keep the footprint minimal.)
-
-## Inheritance
-
-Assembled profiles live in their own repos and can be extended further:
+Profiles can extend other profiles across repos. The parent is applied first, then the child's sections override.
 
 ```
-nex-profiles (fragments)
-    │
-    │  compose
-    ▼
-styrene-lab/nex-mac              (assembled: essentials + macos + bash + dev)
+cwilson613/nex-profiles          (fragments or flat profile)
     │
     │  extends
     ▼
-cwilson613/nex-personal          (private: SSH keys, kubeconfig, aliases)
+cwilson613/nex-personal          (private: SSH keys, kubeconfig, work aliases)
 ```
 
-```
-nex-profiles (fragments)
-    │
-    │  compose
-    ▼
-styrene-lab/nex-linux-desktop    (assembled: essentials + linux + cosmic + pipewire)
-    │
-    │  extends
-    ▼
-cwilson613/nex-gamingpc          (machine-specific: AMD GPU, Steam, COSMIC favorites)
-```
+`extends` and `compose` work together. If a profile has both, resolution order is:
+
+1. The extended parent (recursively resolved)
+2. Each compose fragment in order
+3. The profile's own inline sections (overrides)
 
 ## Shell config pipeline
 
-The `[shell]` section in a profile TOML generates a home-manager nix module that manages your bash (or future: zsh/fish) dotfiles declaratively. Here's how data flows:
+The `[shell]` section generates a home-manager nix module that manages bash dotfiles declaratively:
 
 ```
-profile.toml [shell] section
+profile.toml [shell]
         │
         │  nex profile apply
         ▼
@@ -151,40 +127,33 @@ profile.toml [shell] section
 
 | Field | Maps to | Purpose |
 |-------|---------|---------|
-| `[shell.aliases]` | `programs.bash.shellAliases` | Shell aliases (merged across overlays) |
+| `[shell.aliases]` | `programs.bash.shellAliases` | Shell aliases |
 | `[shell.env]` | `home.sessionVariables` | Env vars exported at login |
 | `profileExtra` | `programs.bash.profileExtra` | Login shell init (Homebrew PATH, Cargo, etc.) |
 | `initExtra` | `programs.bash.initExtra` | Interactive shell init (pipefail, tool PATH, etc.) |
 
 ### History settings
 
-`HISTSIZE`, `HISTFILESIZE`, and `HISTCONTROL` are intercepted from `[shell.env]` and mapped to native home-manager options (`programs.bash.historySize`, etc.) instead of `home.sessionVariables`. This is because home-manager's `programs.bash` sets its own history defaults in `.bashrc`, which would override values set via `.profile` session variables.
+`HISTSIZE`, `HISTFILESIZE`, and `HISTCONTROL` in `[shell.env]` are intercepted and mapped to native home-manager options (`programs.bash.historySize`, etc.). This is because home-manager sets its own history defaults in `.bashrc` that would override values set via `.profile` session variables.
 
-### Overlay merging
+## Git identity inheritance
 
-When a profile uses `extends`, the base profile is applied first and the overlay merges on top:
-
-- **Aliases and env vars**: overlay wins on key conflicts, base values are preserved
-- **profileExtra / initExtra**: overlay content is appended after base content
-- **History settings**: overlay values override base values
-
-### Git identity inheritance
-
-**Important:** The `[git]` section in a base profile sets `git config --global user.name` and `user.email`. If you extend someone else's profile, their git identity is applied first. You **must** override `[git]` in your own overlay, or you'll unknowingly commit as the base profile's author.
+**Important:** The `[git]` section sets `git config --global`. If you extend someone else's profile, their git identity is applied first. Override `[git]` in your own profile or you'll commit as the base profile's author.
 
 ```toml
-# Your overlay — always include this
+# Always include in your profile
 [git]
 name = "Your Name"
 email = "your-email@example.com"
 ```
 
-### Keeping secrets out
+## Keeping secrets out
 
-Public profiles should only contain non-sensitive config. Machine-specific or private config (SSH keys, kubeconfig paths, work-specific aliases) goes in a private overlay:
+Public profiles contain non-sensitive config only. Private config (kubeconfig paths, work aliases) goes in a private overlay:
 
 ```toml
-# Private overlay (e.g. cwilson613/nex-personal)
+# Private overlay (your-user/your-private-profile)
+[meta]
 extends = "cwilson613/nex-profiles"
 
 [shell.aliases]
@@ -192,34 +161,23 @@ clod = "claude --dangerously-skip-permissions"
 
 [shell.env]
 KUBECONFIG = "$HOME/.kube/work.kubeconfig"
+
+[git]
+name = "Your Name"
+email = "your-email@example.com"
 ```
 
-## Fresh Mac setup
+## Not yet implemented
 
-For a colleague setting up a new MacBook:
+These features are defined in fragment metadata but not yet enforced:
 
-```sh
-# 1. Install nex (requires curl — available on stock macOS)
-curl -fsSL https://nex.styrene.io/install.sh | sh
-
-# 2. Bootstrap the system (installs Nix, Homebrew, Xcode CLT, scaffolds config)
-nex init
-
-# 3. Apply your profile (or extend someone else's)
-nex profile apply your-user/your-profile
-
-# 4. Activate
-nex switch
-```
-
-`nex init` handles the full dependency chain: Nix installer, Homebrew installer (which triggers Xcode Command Line Tools / git), config scaffolding, and first build. If git is somehow missing after Homebrew, nex will fail with a clear message pointing to `xcode-select --install`.
+- **`requires`** — Fragments declare dependencies (e.g., `desktop/cosmic` requires `platform/linux`). The metadata exists in the TOML files but nex does not validate the dependency graph yet. Composing a Linux-only fragment on macOS won't error — it will just produce config that doesn't apply.
+- **`nex profile init`** — Interactive builder that walks you through fragment selection. Not yet available; create your `profile.toml` manually for now.
 
 ## Making your own
 
-1. Pick your fragments
-2. Create a repo with a `profile.toml`
+1. Create a repo with a `profile.toml`
+2. Either write a flat profile or use `compose` to pick fragments from this repo
 3. Apply it: `nex profile apply your-user/your-profile`
-
-Or use the builder: `nex profile init` walks you through the decision tree and generates a `profile.toml` from fragments.
 
 See [nex.styrene.io](https://nex.styrene.io) for docs.
