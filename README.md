@@ -172,6 +172,7 @@ email = "your-email@example.com"
 These features are defined in fragment metadata but not yet enforced:
 
 - **`requires`** — Fragments declare dependencies (e.g., `desktop/cosmic` requires `platform/linux`). The metadata exists in the TOML files but nex does not validate the dependency graph yet. Composing a Linux-only fragment on macOS won't error — it will just produce config that doesn't apply.
+- **`[ssh]`** — SSH host configuration (`[ssh]`, `[[ssh.hosts]]` sections) is parsed without error but silently ignored. SSH config must be managed separately (e.g., via home-manager's `programs.ssh` in your nix config, or manual `~/.ssh/config`).
 - **`nex profile init`** — Interactive builder that walks you through fragment selection. Not yet available; create your `profile.toml` manually for now.
 
 ## Making your own
