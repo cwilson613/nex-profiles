@@ -1,0 +1,24 @@
+# desktop/hyprland — Hyprland tiling compositor
+#
+# Requires: platform/linux
+
+[fragment]
+name        = "hyprland"
+description = "Hyprland tiling Wayland compositor — waybar, wofi, sane keybinds"
+requires    = ["platform/linux"]
+
+[linux]
+desktop = "hyprland"
+
+[packages]
+nix = [
+  "hyprland",
+  "waybar",
+  "wofi",
+  "swaylock",
+  "swayidle",
+  "grim",
+  "slurp",
+  "wl-clipboard",
+  "mako",
+]

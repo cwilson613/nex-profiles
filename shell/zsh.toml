@@ -1,0 +1,16 @@
+# shell/zsh — zsh as default shell
+
+[fragment]
+name        = "zsh"
+description = "Zsh as default shell with completions"
+
+[shell]
+default = "zsh"
+
+[packages]
+nix = [
+  "zsh",
+  "zsh-completions",
+  "zsh-autosuggestions",
+  "zsh-syntax-highlighting",
+]

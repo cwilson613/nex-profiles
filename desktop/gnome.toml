@@ -1,0 +1,26 @@
+# desktop/gnome — GNOME desktop environment
+#
+# Requires: platform/linux
+
+[fragment]
+name        = "gnome"
+description = "GNOME desktop — dark mode, dash favorites, extensions"
+requires    = ["platform/linux"]
+
+[linux]
+desktop = "gnome"
+
+[packages]
+nix = [
+  "gnome-tweaks",
+]
+
+[linux.gnome]
+dark_mode      = true
+dash_favorites = [
+  "org.gnome.Nautilus.desktop",
+  "kitty.desktop",
+  "firefox.desktop",
+  "org.gnome.Settings.desktop",
+]
+hot_corners = false

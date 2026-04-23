@@ -1,0 +1,27 @@
+# role/edge — lightweight edge/IoT/embedded device
+#
+# Minimal footprint, headless, optimized for constrained resources.
+# Requires: platform/linux
+
+[fragment]
+name        = "edge"
+description = "Edge/IoT device — minimal, headless, low resource footprint"
+requires    = ["platform/linux"]
+
+[packages]
+nix = [
+  "tmux",
+  "ncdu",
+]
+
+[linux.ssh]
+permit_root_login       = false
+password_authentication = false
+
+[linux.services]
+sshd = true
+
+[linux.nix]
+gc_automatic   = true
+gc_older_than  = "3d"          # aggressive cleanup — disk is precious
+optimize_store = true

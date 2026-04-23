@@ -1,0 +1,13 @@
+# audio/pipewire — PipeWire audio stack
+#
+# Requires: platform/linux
+
+[fragment]
+name        = "pipewire"
+description = "PipeWire audio — low latency, bluetooth, PulseAudio compat"
+requires    = ["platform/linux"]
+
+[linux.audio]
+backend     = "pipewire"
+low_latency = true
+bluetooth   = true

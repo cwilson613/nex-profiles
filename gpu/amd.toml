@@ -1,0 +1,22 @@
+# gpu/amd — AMD open-source GPU stack
+#
+# Requires: platform/linux
+
+[fragment]
+name        = "amd"
+description = "AMD GPU — amdgpu, mesa, Vulkan, VA-API, 32-bit"
+requires    = ["platform/linux"]
+
+[packages]
+nix = [
+  "pciutils",
+  "lm_sensors",
+  "corectrl",
+]
+
+[linux.gpu]
+driver  = "amdgpu"
+vulkan  = true
+opencl  = true
+vaapi   = true
+32bit   = true

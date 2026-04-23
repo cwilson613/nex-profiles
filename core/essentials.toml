@@ -1,0 +1,42 @@
+# core/essentials — the stuff every machine should have
+#
+# Platform-agnostic baseline: modern CLI tools, GNU userland,
+# and sensible git defaults. No opinions on shell, desktop, or editor.
+
+[fragment]
+name        = "essentials"
+description = "Universal CLI tools, GNU userland, git defaults"
+
+[packages]
+nix = [
+  "coreutils",
+  "findutils",
+  "gnused",
+  "gawk",
+  "git",
+  "vim",
+  "curl",
+  "wget",
+  "jq",
+  "yq",
+  "ripgrep",
+  "fd",
+  "eza",
+  "bat",
+  "htop",
+  "tree",
+  "unzip",
+  "gzip",
+]
+
+[shell.aliases]
+ls  = "eza"
+ll  = "eza -la"
+la  = "eza -a"
+lt  = "eza --tree"
+cat = "bat"
+
+[git]
+default_branch         = "main"
+pull_rebase            = true
+push_auto_setup_remote = true

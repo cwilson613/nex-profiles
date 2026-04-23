@@ -1,0 +1,21 @@
+# desktop/cosmic — System76 COSMIC desktop environment
+#
+# Requires: platform/linux
+
+[fragment]
+name        = "cosmic"
+description = "COSMIC desktop — dark mode, dock, app defaults"
+requires    = ["platform/linux"]
+
+[linux]
+desktop = "cosmic"
+
+[linux.cosmic]
+dark_mode      = true
+dock_autohide  = false
+dock_favorites = [
+  "com.system76.CosmicFiles",
+  "kitty",
+  "firefox",
+  "com.system76.CosmicSettings",
+]

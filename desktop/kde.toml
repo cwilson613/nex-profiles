@@ -1,0 +1,21 @@
+# desktop/kde — KDE Plasma desktop environment
+#
+# Requires: platform/linux
+
+[fragment]
+name        = "kde"
+description = "KDE Plasma desktop — dark theme, panel, defaults"
+requires    = ["platform/linux"]
+
+[linux]
+desktop = "kde"
+
+[linux.kde]
+dark_mode    = true
+panel_height = 44
+favorites = [
+  "org.kde.dolphin.desktop",
+  "kitty.desktop",
+  "firefox.desktop",
+  "systemsettings.desktop",
+]

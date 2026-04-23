@@ -1,0 +1,23 @@
+# role/gaming — Linux gaming stack
+#
+# Steam, Proton, performance overlays, controller support.
+# Requires: platform/linux (gaming on macOS is a different kind of pain)
+
+[fragment]
+name        = "gaming"
+description = "Linux gaming — Steam, Proton-GE, MangoHud, Gamemode, Gamescope"
+requires    = ["platform/linux"]
+
+[packages]
+nix = [
+  "discord",
+  "obs-studio",
+]
+
+[linux.gaming]
+steam       = true
+gamemode    = true
+mangohud    = true
+gamescope   = true
+controllers = true
+proton_ge   = true

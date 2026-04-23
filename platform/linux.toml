@@ -1,0 +1,38 @@
+# platform/linux — NixOS baseline
+#
+# Core Linux system config that all NixOS machines share regardless
+# of whether they're a desktop, server, or edge device. Networking,
+# locale, nix settings, and the basics.
+
+[fragment]
+name        = "linux"
+description = "NixOS baseline — networking, locale, nix settings, system packages"
+
+[packages]
+nix = [
+  "bash",
+  "pciutils",
+  "usbutils",
+  "lsof",
+  "iproute2",
+  "dnsutils",
+  "nmap",
+  "tcpdump",
+  "lm_sensors",
+  "smartmontools",
+]
+
+[linux]
+flakes    = true
+nix_gc    = "weekly"
+locale    = "en_US.UTF-8"
+timezone  = "America/New_York"
+firewall  = false             # off by default — techy users, local dev, don't be ralph wiggum
+
+[linux.networking]
+networkmanager = true
+resolved       = true
+
+[linux.nix]
+allowed_users  = ["@wheel"]
+trusted_users  = ["root", "@wheel"]

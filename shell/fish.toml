@@ -1,0 +1,13 @@
+# shell/fish — fish as default shell
+
+[fragment]
+name        = "fish"
+description = "Fish as default shell"
+
+[shell]
+default = "fish"
+
+[packages]
+nix = [
+  "fish",
+]

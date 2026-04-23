@@ -1,0 +1,27 @@
+# gpu/nvidia — NVIDIA proprietary GPU stack
+#
+# Requires: platform/linux
+
+[fragment]
+name        = "nvidia"
+description = "NVIDIA GPU — proprietary driver, Vulkan, CUDA, 32-bit"
+requires    = ["platform/linux"]
+
+[packages]
+nix = [
+  "pciutils",
+  "lm_sensors",
+  "nvtopPackages.nvidia",
+]
+
+[linux.gpu]
+driver  = "nvidia"
+vulkan  = true
+cuda    = true
+vaapi   = true
+32bit   = true
+
+[linux.gpu.nvidia]
+open_driver    = false          # proprietary by default — open kernel module is opt-in
+power_management = true
+modesetting    = true

@@ -1,0 +1,12 @@
+# audio/pulseaudio — PulseAudio audio stack
+#
+# Requires: platform/linux
+
+[fragment]
+name        = "pulseaudio"
+description = "PulseAudio audio — stable, well-supported, bluetooth"
+requires    = ["platform/linux"]
+
+[linux.audio]
+backend   = "pulseaudio"
+bluetooth = true

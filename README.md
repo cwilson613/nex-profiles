@@ -1,62 +1,140 @@
 # nex-profiles
 
-Community base profiles for [nex](https://nex.styrene.io). Opinionated, platform-specific starter configs that you extend with your own personal or machine-specific profile.
+Composable profile fragments for [nex](https://nex.styrene.io). Mix and match to build your system config.
 
-## Profiles
+## Fragments
 
-| Profile | Platform | Description |
-|---------|----------|-------------|
-| [mac](mac/profile.toml) | macOS | Developer Mac with sane defaults — kitty, Firefox, dark mode, clean dock, fast keyboard, TouchID, bash |
+Fragments are the atoms of a nex profile. Each one handles a single concern. Compose them in your `profile.toml` and nex merges everything together.
 
-More coming: `linux-desktop`, `linux-server`, `linux-edge`.
+| Category | Fragments | Description |
+|----------|-----------|-------------|
+| **core** | `essentials` | CLI tools, GNU userland, git defaults — the stuff every machine needs |
+| **platform** | `macos`, `linux` | OS-level defaults (system prefs, networking, nix settings) |
+| **desktop** | `cosmic`, `gnome`, `kde`, `hyprland` | Desktop environment config (Linux only) |
+| **gpu** | `amd`, `nvidia`, `intel` | GPU drivers, Vulkan, hardware acceleration (Linux only) |
+| **audio** | `pipewire`, `pulseaudio` | Audio backend config (Linux only) |
+| **shell** | `bash`, `zsh`, `fish` | Default shell, completions, history |
+| **role** | `dev`, `gaming`, `server`, `edge` | Use-case packages and services |
 
-## How it works
+## Compose order
 
-Each profile is a `profile.toml` that nex can apply to configure a machine from scratch. Profiles use the `extends` field for inheritance — your personal profile extends a base, and nex merges them:
+Fragments are merged in the order listed. Later fragments win on scalar values; arrays (like package lists) are concatenated and deduped.
 
+```toml
+# Last writer wins: if core/essentials sets dark_mode = false
+# and platform/macos sets dark_mode = true, you get true.
+compose = [
+  "core/essentials",
+  "platform/macos",
+  "shell/bash",
+  "role/dev",
+]
 ```
-nex-profiles/mac                 (community base)
-    ^
-cwilson613/nex-personal          (your SSH keys, kubeconfig, aliases)
+
+## Dependencies
+
+Fragments declare what they require:
+
+```toml
+[fragment]
+name     = "cosmic"
+requires = ["platform/linux"]
 ```
 
-```
-nex-profiles/linux-desktop       (community base)
-    ^
-cwilson613/nex-gamingpc          (AMD GPU, Steam, COSMIC specifics)
-```
+Nex validates the dependency graph before applying. If you compose `desktop/cosmic` without `platform/linux`, it errors.
 
-Packages, aliases, and settings are merged — not replaced — so the base gives you a solid foundation and your personal profile layers on private config.
+## Examples
 
-## Usage
+**Mac developer workstation:**
 
-```sh
-# Apply directly
-nex profile apply cwilson613/nex-profiles/mac
-
-# Or extend in your own profile.toml
+```toml
 [meta]
-extends = "cwilson613/nex-profiles/mac"
+name = "my-mac"
+compose = [
+  "core/essentials",
+  "platform/macos",
+  "shell/bash",
+  "role/dev",
+]
 ```
 
-## What the mac profile configures
+**AMD gaming desktop (what nex-gamingpc becomes):**
 
-**Packages**: bash, kitty, firefox, ripgrep, fd, eza, bat, jq, yq, curl, wget, htop, git, vim, GNU coreutils/sed/awk/findutils
+```toml
+[meta]
+name = "gaming-pc"
+compose = [
+  "core/essentials",
+  "platform/linux",
+  "desktop/cosmic",
+  "gpu/amd",
+  "audio/pipewire",
+  "shell/bash",
+  "role/gaming",
+]
+```
 
-**Shell**: bash default, eza/bat aliases
+**Headless server:**
 
-**Dock**: stripped to Finder, Firefox, kitty, System Settings. Auto-hide, no recents.
+```toml
+[meta]
+name = "homelab-node"
+compose = [
+  "core/essentials",
+  "platform/linux",
+  "shell/bash",
+  "role/server",
+]
+```
 
-**Keyboard**: fast repeat, no auto-correct, no smart quotes/dashes/capitalize, full keyboard access
+**Edge device:**
 
-**Trackpad**: tap to click, natural scrolling
+```toml
+[meta]
+name = "sensor-node"
+compose = [
+  "platform/linux",
+  "shell/bash",
+  "role/edge",
+]
+```
 
-**Finder**: show extensions + hidden files, list view, path/status bars, search current folder
+(Note: edge skips `core/essentials` to keep the footprint minimal.)
 
-**Screenshots & Recordings**: save to `~/Screenshots`, no shadow
+## Inheritance
 
-**Security**: TouchID for sudo, immediate lock (TouchID makes unlock instant)
+Assembled profiles live in their own repos and can be extended further:
 
-**Power**: 45 min display sleep, never system sleep/hibernate
+```
+nex-profiles (fragments)
+    │
+    │  compose
+    ▼
+styrene-lab/nex-mac              (assembled: essentials + macos + bash + dev)
+    │
+    │  extends
+    ▼
+cwilson613/nex-personal          (private: SSH keys, kubeconfig, aliases)
+```
 
-**Other**: dark mode, expanded save/print dialogs, save to disk not iCloud, no .DS_Store on network/USB, no quarantine dialog, Bluetooth on, no hot corners
+```
+nex-profiles (fragments)
+    │
+    │  compose
+    ▼
+styrene-lab/nex-linux-desktop    (assembled: essentials + linux + cosmic + pipewire)
+    │
+    │  extends
+    ▼
+cwilson613/nex-gamingpc          (machine-specific: AMD GPU, Steam, COSMIC favorites)
+```
+
+## Making your own
+
+1. Pick your fragments
+2. Create a repo with a `profile.toml`
+3. Apply it: `nex profile apply your-user/your-profile`
+
+Or use the builder: `nex profile init` walks you through the decision tree and generates a `profile.toml` from fragments.
+
+See [nex.styrene.io](https://nex.styrene.io) for docs.

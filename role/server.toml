@@ -1,0 +1,30 @@
+# role/server — headless Linux server
+#
+# Monitoring, hardened SSH, containers, no GUI.
+# Requires: platform/linux
+
+[fragment]
+name        = "server"
+description = "Headless server — monitoring, hardened SSH, containers, no GUI"
+requires    = ["platform/linux"]
+
+[packages]
+nix = [
+  "docker",
+  "docker-compose",
+  "tmux",
+  "lsof",
+  "iotop",
+  "ncdu",
+  "fail2ban",
+]
+
+[linux.ssh]
+permit_root_login       = false
+password_authentication = false
+challenge_response      = false
+
+[linux.services]
+docker  = true
+sshd    = true
+fail2ban = true

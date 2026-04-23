@@ -1,0 +1,22 @@
+# shell/bash — bash as default shell
+#
+# Modern bash (5.x from nix, not macOS 3.2), sensible defaults,
+# history config, completions.
+
+[fragment]
+name        = "bash"
+description = "Bash 5.x as default shell with completions and history config"
+
+[shell]
+default = "bash"
+
+[packages]
+nix = [
+  "bash",
+  "bash-completion",
+]
+
+[shell.env]
+HISTCONTROL   = "ignoreboth:erasedups"
+HISTSIZE      = "50000"
+HISTFILESIZE  = "50000"

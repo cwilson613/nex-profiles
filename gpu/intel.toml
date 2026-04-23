@@ -1,0 +1,13 @@
+# gpu/intel — Intel integrated/Arc GPU
+#
+# Requires: platform/linux
+
+[fragment]
+name        = "intel"
+description = "Intel GPU — i915/xe, Vulkan, VA-API"
+requires    = ["platform/linux"]
+
+[linux.gpu]
+driver  = "intel"
+vulkan  = true
+vaapi   = true

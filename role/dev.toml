@@ -1,0 +1,32 @@
+# role/dev — developer workstation
+#
+# Containers, language toolchains, editors, debugging tools.
+# Pairs with any platform and desktop.
+
+[fragment]
+name        = "dev"
+description = "Developer workstation — containers, editors, language tools, debugging"
+
+[packages]
+nix = [
+  "docker",
+  "docker-compose",
+  "kubectl",
+  "k9s",
+  "tmux",
+  "gh",
+  "direnv",
+  "shellcheck",
+  "nixfmt-rfc-style",
+  "strace",
+  "file",
+  "openssl",
+]
+
+[shell.aliases]
+k   = "kubectl"
+dc  = "docker compose"
+g   = "git"
+gs  = "git status"
+gd  = "git diff"
+gl  = "git log --oneline -20"
