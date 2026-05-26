@@ -3,10 +3,15 @@
 # Requires: platform/linux
 
 [fragment]
+schema      = "io.styrene.nex.profile-fragment.v1"
+id          = "desktop/gnome"
 name        = "gnome"
+version     = "0.1.0"
 description = "GNOME desktop — dark mode, dash favorites, extensions"
+category    = "desktop"
 requires    = ["platform/linux"]
-
+platforms   = ["linux"]
+visibility  = "public"
 [linux]
 desktop = "gnome"
 
@@ -24,3 +29,8 @@ dash_favorites = [
   "org.gnome.Settings.desktop",
 ]
 hot_corners = false
+
+[fragment.safety]
+mutates_system_services = true
+mutates_hardware_drivers = false
+requires_confirmation = true

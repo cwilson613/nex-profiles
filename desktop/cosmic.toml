@@ -3,10 +3,15 @@
 # Requires: platform/linux
 
 [fragment]
+schema      = "io.styrene.nex.profile-fragment.v1"
+id          = "desktop/cosmic"
 name        = "cosmic"
+version     = "0.1.0"
 description = "COSMIC desktop — dark mode, dock, app defaults"
+category    = "desktop"
 requires    = ["platform/linux"]
-
+platforms   = ["linux"]
+visibility  = "public"
 [linux]
 desktop = "cosmic"
 
@@ -19,3 +24,8 @@ dock_favorites = [
   "firefox",
   "com.system76.CosmicSettings",
 ]
+
+[fragment.safety]
+mutates_system_services = true
+mutates_hardware_drivers = false
+requires_confirmation = true

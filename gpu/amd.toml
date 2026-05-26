@@ -3,10 +3,15 @@
 # Requires: platform/linux
 
 [fragment]
+schema      = "io.styrene.nex.profile-fragment.v1"
+id          = "gpu/amd"
 name        = "amd"
+version     = "0.1.0"
 description = "AMD GPU — amdgpu, mesa, Vulkan, VA-API, 32-bit"
+category    = "gpu"
 requires    = ["platform/linux"]
-
+platforms   = ["linux"]
+visibility  = "public"
 [packages]
 nix = [
   "pciutils",
@@ -20,3 +25,8 @@ vulkan  = true
 opencl  = true
 vaapi   = true
 32bit   = true
+
+[fragment.safety]
+mutates_system_services = false
+mutates_hardware_drivers = true
+requires_confirmation = true

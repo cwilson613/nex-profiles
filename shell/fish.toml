@@ -1,9 +1,14 @@
 # shell/fish — fish as default shell
 
 [fragment]
+schema      = "io.styrene.nex.profile-fragment.v1"
+id          = "shell/fish"
 name        = "fish"
+version     = "0.1.0"
 description = "Fish as default shell"
-
+category    = "shell"
+platforms   = ["any"]
+visibility  = "public"
 [shell]
 default = "fish"
 

@@ -4,10 +4,15 @@
 # Requires: platform/linux
 
 [fragment]
+schema      = "io.styrene.nex.profile-fragment.v1"
+id          = "role/server"
 name        = "server"
+version     = "0.1.0"
 description = "Headless server — monitoring, hardened SSH, containers, no GUI"
+category    = "role"
 requires    = ["platform/linux"]
-
+platforms   = ["linux"]
+visibility  = "public"
 [packages]
 nix = [
   "docker",

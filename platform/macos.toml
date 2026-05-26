@@ -5,9 +5,14 @@
 # only has one desktop environment.
 
 [fragment]
+schema      = "io.styrene.nex.profile-fragment.v1"
+id          = "platform/macos"
 name        = "macos"
+version     = "0.1.0"
 description = "macOS system defaults — keyboard, trackpad, Finder, dock, power, security"
-
+category    = "platform"
+platforms   = ["macos"]
+visibility  = "public"
 [packages]
 nix = [
   "bash",
@@ -99,3 +104,8 @@ enabled = true
 [macos.mission_control]
 enabled     = false
 hot_corners = false
+
+[fragment.safety]
+mutates_system_services = true
+mutates_hardware_drivers = false
+requires_confirmation = true

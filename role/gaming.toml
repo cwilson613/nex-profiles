@@ -4,10 +4,15 @@
 # Requires: platform/linux (gaming on macOS is a different kind of pain)
 
 [fragment]
+schema      = "io.styrene.nex.profile-fragment.v1"
+id          = "role/gaming"
 name        = "gaming"
+version     = "0.1.0"
 description = "Linux gaming — Steam, Proton-GE, MangoHud, Gamemode, Gamescope"
+category    = "role"
 requires    = ["platform/linux"]
-
+platforms   = ["linux"]
+visibility  = "public"
 [packages]
 nix = [
   "discord",

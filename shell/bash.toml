@@ -4,9 +4,14 @@
 # history config, completions, Homebrew/Cargo PATH setup.
 
 [fragment]
+schema      = "io.styrene.nex.profile-fragment.v1"
+id          = "shell/bash"
 name        = "bash"
+version     = "0.1.0"
 description = "Bash 5.x as default shell with completions, history, and PATH setup"
-
+category    = "shell"
+platforms   = ["any"]
+visibility  = "public"
 [shell]
 default = "bash"
 

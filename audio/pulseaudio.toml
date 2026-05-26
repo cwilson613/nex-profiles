@@ -3,10 +3,20 @@
 # Requires: platform/linux
 
 [fragment]
+schema      = "io.styrene.nex.profile-fragment.v1"
+id          = "audio/pulseaudio"
 name        = "pulseaudio"
+version     = "0.1.0"
 description = "PulseAudio audio — stable, well-supported, bluetooth"
+category    = "audio"
 requires    = ["platform/linux"]
-
+platforms   = ["linux"]
+visibility  = "public"
 [linux.audio]
 backend   = "pulseaudio"
 bluetooth = true
+
+[fragment.safety]
+mutates_system_services = true
+mutates_hardware_drivers = false
+requires_confirmation = true

@@ -3,11 +3,21 @@
 # Requires: platform/linux
 
 [fragment]
+schema      = "io.styrene.nex.profile-fragment.v1"
+id          = "audio/pipewire"
 name        = "pipewire"
+version     = "0.1.0"
 description = "PipeWire audio — low latency, bluetooth, PulseAudio compat"
+category    = "audio"
 requires    = ["platform/linux"]
-
+platforms   = ["linux"]
+visibility  = "public"
 [linux.audio]
 backend     = "pipewire"
 low_latency = true
 bluetooth   = true
+
+[fragment.safety]
+mutates_system_services = true
+mutates_hardware_drivers = false
+requires_confirmation = true

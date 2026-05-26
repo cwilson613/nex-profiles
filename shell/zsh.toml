@@ -1,9 +1,14 @@
 # shell/zsh — zsh as default shell
 
 [fragment]
+schema      = "io.styrene.nex.profile-fragment.v1"
+id          = "shell/zsh"
 name        = "zsh"
+version     = "0.1.0"
 description = "Zsh as default shell with completions"
-
+category    = "shell"
+platforms   = ["any"]
+visibility  = "public"
 [shell]
 default = "zsh"
 

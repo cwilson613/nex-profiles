@@ -4,10 +4,15 @@
 # Requires: platform/linux
 
 [fragment]
+schema      = "io.styrene.nex.profile-fragment.v1"
+id          = "role/edge"
 name        = "edge"
+version     = "0.1.0"
 description = "Edge/IoT device — minimal, headless, low resource footprint"
+category    = "role"
 requires    = ["platform/linux"]
-
+platforms   = ["linux"]
+visibility  = "public"
 [packages]
 nix = [
   "tmux",

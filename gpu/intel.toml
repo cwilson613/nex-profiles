@@ -3,11 +3,21 @@
 # Requires: platform/linux
 
 [fragment]
+schema      = "io.styrene.nex.profile-fragment.v1"
+id          = "gpu/intel"
 name        = "intel"
+version     = "0.1.0"
 description = "Intel GPU — i915/xe, Vulkan, VA-API"
+category    = "gpu"
 requires    = ["platform/linux"]
-
+platforms   = ["linux"]
+visibility  = "public"
 [linux.gpu]
 driver  = "intel"
 vulkan  = true
 vaapi   = true
+
+[fragment.safety]
+mutates_system_services = false
+mutates_hardware_drivers = true
+requires_confirmation = true

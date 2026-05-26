@@ -4,9 +4,14 @@
 # Pairs with any platform and desktop.
 
 [fragment]
+schema      = "io.styrene.nex.profile-fragment.v1"
+id          = "role/dev"
 name        = "dev"
+version     = "0.1.0"
 description = "Developer workstation — containers, editors, language tools, debugging"
-
+category    = "role"
+platforms   = ["linux"]
+visibility  = "public"
 [packages]
 nix = [
   "docker",

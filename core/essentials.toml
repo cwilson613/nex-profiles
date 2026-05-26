@@ -4,9 +4,14 @@
 # and sensible git defaults. No opinions on shell, desktop, or editor.
 
 [fragment]
+schema      = "io.styrene.nex.profile-fragment.v1"
+id          = "core/essentials"
 name        = "essentials"
+version     = "0.1.0"
 description = "Universal CLI tools, GNU userland, git defaults"
-
+category    = "core"
+platforms   = ["any"]
+visibility  = "public"
 [packages]
 nix = [
   "coreutils",

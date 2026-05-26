@@ -5,9 +5,14 @@
 # locale, nix settings, and the basics.
 
 [fragment]
+schema      = "io.styrene.nex.profile-fragment.v1"
+id          = "platform/linux"
 name        = "linux"
+version     = "0.1.0"
 description = "NixOS baseline — networking, locale, nix settings, system packages"
-
+category    = "platform"
+platforms   = ["linux"]
+visibility  = "public"
 [packages]
 nix = [
   "bash",
@@ -36,3 +41,8 @@ resolved       = true
 [linux.nix]
 allowed_users  = ["@wheel"]
 trusted_users  = ["root", "@wheel"]
+
+[fragment.safety]
+mutates_system_services = true
+mutates_hardware_drivers = false
+requires_confirmation = true

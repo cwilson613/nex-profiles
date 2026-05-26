@@ -3,10 +3,15 @@
 # Requires: platform/linux
 
 [fragment]
+schema      = "io.styrene.nex.profile-fragment.v1"
+id          = "gpu/nvidia"
 name        = "nvidia"
+version     = "0.1.0"
 description = "NVIDIA GPU — proprietary driver, Vulkan, CUDA, 32-bit"
+category    = "gpu"
 requires    = ["platform/linux"]
-
+platforms   = ["linux"]
+visibility  = "public"
 [packages]
 nix = [
   "pciutils",
@@ -25,3 +30,8 @@ vaapi   = true
 open_driver    = false          # proprietary by default — open kernel module is opt-in
 power_management = true
 modesetting    = true
+
+[fragment.safety]
+mutates_system_services = false
+mutates_hardware_drivers = true
+requires_confirmation = true
