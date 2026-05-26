@@ -9,6 +9,7 @@ description = "Zsh as default shell with completions"
 category    = "shell"
 platforms   = ["any"]
 visibility  = "public"
+
 [shell]
 default = "zsh"
 

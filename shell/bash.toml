@@ -12,6 +12,7 @@ description = "Bash 5.x as default shell with completions, history, and PATH set
 category    = "shell"
 platforms   = ["any"]
 visibility  = "public"
+
 [shell]
 default = "bash"
 

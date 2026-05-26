@@ -9,6 +9,7 @@ description = "Fish as default shell"
 category    = "shell"
 platforms   = ["any"]
 visibility  = "public"
+
 [shell]
 default = "fish"
 

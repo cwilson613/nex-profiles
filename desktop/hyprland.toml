@@ -12,6 +12,7 @@ category    = "desktop"
 requires    = ["platform/linux"]
 platforms   = ["linux"]
 visibility  = "public"
+
 [linux]
 desktop = "hyprland"
 

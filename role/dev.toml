@@ -12,6 +12,7 @@ description = "Developer workstation — containers, editors, language tools, de
 category    = "role"
 platforms   = ["linux"]
 visibility  = "public"
+
 [packages]
 nix = [
   "docker",

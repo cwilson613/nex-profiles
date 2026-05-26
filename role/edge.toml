@@ -13,6 +13,7 @@ category    = "role"
 requires    = ["platform/linux"]
 platforms   = ["linux"]
 visibility  = "public"
+
 [packages]
 nix = [
   "tmux",

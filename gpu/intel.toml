@@ -12,6 +12,7 @@ category    = "gpu"
 requires    = ["platform/linux"]
 platforms   = ["linux"]
 visibility  = "public"
+
 [linux.gpu]
 driver  = "intel"
 vulkan  = true

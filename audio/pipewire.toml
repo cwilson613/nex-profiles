@@ -12,6 +12,7 @@ category    = "audio"
 requires    = ["platform/linux"]
 platforms   = ["linux"]
 visibility  = "public"
+
 [linux.audio]
 backend     = "pipewire"
 low_latency = true

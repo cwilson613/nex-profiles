@@ -13,6 +13,7 @@ description = "macOS system defaults — keyboard, trackpad, Finder, dock, power
 category    = "platform"
 platforms   = ["macos"]
 visibility  = "public"
+
 [packages]
 nix = [
   "bash",
