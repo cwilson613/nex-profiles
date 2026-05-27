@@ -1,0 +1,19 @@
+[starter]
+schema = "io.styrene.nex.starter-profile.v1"
+id = "starter/amd64-vm-base"
+name = "amd64 VM Base"
+version = "0.1.0"
+hardware_class = "amd64-generic"
+purpose = "vm-base"
+nix_system = "x86_64-linux"
+description = "Generic x86_64 VM guest baseline for deterministic image builds."
+fragments = [
+  "core/essentials@0.1.0",
+  "platform/linux@0.1.0",
+  "shell/bash@0.1.0",
+  "role/server@0.1.0",
+  "role/vm-guest@0.1.0",
+]
+
+[starter.evidence]
+tier = "evaluates"

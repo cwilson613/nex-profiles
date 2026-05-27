@@ -1,0 +1,21 @@
+[starter]
+schema = "io.styrene.nex.starter-profile.v1"
+id = "starter/amd64-amd-gaming"
+name = "AMD Gaming Desktop"
+version = "0.1.0"
+hardware_class = "amd64-amd-desktop"
+purpose = "gaming"
+nix_system = "x86_64-linux"
+description = "AMD GPU gaming workstation with COSMIC, PipeWire, Steam, MangoHud, and Gamescope."
+fragments = [
+  "core/essentials@0.1.0",
+  "platform/linux@0.1.0",
+  "shell/bash@0.1.0",
+  "desktop/cosmic@0.1.0",
+  "audio/pipewire@0.1.0",
+  "gpu/amd@0.1.0",
+  "role/gaming@0.1.0",
+]
+
+[starter.evidence]
+tier = "evaluates"

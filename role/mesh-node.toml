@@ -1,0 +1,28 @@
+# role/mesh-node — generic mesh/MANET participant
+#
+# Requires: platform/linux, role/edge-node
+
+[fragment]
+schema      = "io.styrene.nex.profile-fragment.v1"
+id          = "role/mesh-node"
+name        = "mesh-node"
+version     = "0.1.0"
+description = "Mesh/MANET node — generic packages and service posture for field mesh participants"
+category    = "role"
+requires    = ["platform/linux", "role/edge-node"]
+platforms   = ["linux"]
+visibility  = "public"
+
+[packages]
+nix = [
+  "wireguard-tools",
+  "tcpdump",
+  "mtr",
+  "iperf3",
+]
+
+[linux.networking]
+forwarding = false
+
+[linux.mesh]
+role = "node"

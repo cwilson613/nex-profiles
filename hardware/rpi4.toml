@@ -1,0 +1,32 @@
+# hardware/rpi4 — Raspberry Pi 4 board support assumptions
+#
+# Requires: platform/linux
+
+[fragment]
+schema      = "io.styrene.nex.profile-fragment.v1"
+id          = "hardware/rpi4"
+name        = "rpi4"
+version     = "0.1.0"
+description = "Raspberry Pi 4 hardware baseline — ARM board assumptions, firmware, boot, and common peripherals"
+category    = "hardware"
+requires    = ["platform/linux"]
+platforms   = ["linux"]
+visibility  = "public"
+
+[hardware]
+class = "arm64-rpi4"
+arch = "aarch64"
+board = "raspberry-pi-4"
+
+[linux.boot]
+firmware = "raspberry-pi-4"
+serial_console = true
+
+[linux.hardware]
+bluetooth = true
+wifi = true
+
+[fragment.safety]
+mutates_system_services = true
+mutates_hardware_drivers = true
+requires_confirmation = true

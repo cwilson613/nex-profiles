@@ -1,0 +1,26 @@
+# role/vm-guest — generic VM guest baseline
+#
+# Requires: platform/linux
+
+[fragment]
+schema      = "io.styrene.nex.profile-fragment.v1"
+id          = "role/vm-guest"
+name        = "vm-guest"
+version     = "0.1.0"
+description = "VM guest — virtual hardware assumptions, serial console, SSH, and guest-friendly defaults"
+category    = "role"
+requires    = ["platform/linux"]
+platforms   = ["linux"]
+visibility  = "public"
+
+[packages]
+nix = [
+  "qemu-guest-agent",
+]
+
+[linux.boot]
+serial_console = true
+
+[linux.services]
+sshd = true
+qemu_guest_agent = true

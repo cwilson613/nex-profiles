@@ -1,0 +1,24 @@
+# role/kiosk — display/appliance kiosk baseline
+#
+# Requires: platform/linux
+
+[fragment]
+schema      = "io.styrene.nex.profile-fragment.v1"
+id          = "role/kiosk"
+name        = "kiosk"
+version     = "0.1.0"
+description = "Kiosk/display appliance — graphical appliance baseline for fixed-purpose devices"
+category    = "role"
+requires    = ["platform/linux"]
+platforms   = ["linux"]
+visibility  = "public"
+
+[packages]
+nix = [
+  "chromium",
+]
+
+[linux.kiosk]
+enabled = true
+browser = "chromium"
+fullscreen = true

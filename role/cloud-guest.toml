@@ -1,0 +1,25 @@
+# role/cloud-guest — generic cloud image guest baseline
+#
+# Requires: platform/linux, role/vm-guest
+
+[fragment]
+schema      = "io.styrene.nex.profile-fragment.v1"
+id          = "role/cloud-guest"
+name        = "cloud-guest"
+version     = "0.1.0"
+description = "Cloud guest — cloud-init, SSH, serial console, and image-safe defaults"
+category    = "role"
+requires    = ["platform/linux", "role/vm-guest"]
+platforms   = ["linux"]
+visibility  = "public"
+
+[linux.services]
+sshd = true
+cloud_init = true
+
+[linux.boot]
+serial_console = true
+
+[linux.image]
+bake_host_keys = false
+static_networking = false

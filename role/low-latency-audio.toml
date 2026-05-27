@@ -1,0 +1,42 @@
+# role/low-latency-audio — network/music/audio workstation role
+#
+# Requires: platform/linux, audio/pipewire
+
+[fragment]
+schema      = "io.styrene.nex.profile-fragment.v1"
+id          = "role/low-latency-audio"
+name        = "low-latency-audio"
+version     = "0.1.0"
+description = "Low-latency audio — network music, JACK-compatible PipeWire, diagnostics, and local recording tools"
+category    = "role"
+requires    = ["platform/linux", "audio/pipewire"]
+platforms   = ["linux"]
+visibility  = "public"
+
+[packages]
+nix = [
+  "qpwgraph",
+  "pavucontrol",
+  "ardour",
+  "jacktrip",
+  "sonobus",
+  "jamulus",
+  "mumble",
+  "qmidinet",
+  "drumgizmo",
+  "iperf3",
+  "mtr",
+]
+
+[linux.audio]
+low_latency = true
+jack_compat = true
+realtime = true
+sample_rate = 48000
+quantum = 64
+quantum_max = 256
+
+[linux.collaboration]
+voice = "mumble"
+audio_protocols = ["jacktrip", "sonobus", "jamulus"]
+midi_network = "qmidinet"

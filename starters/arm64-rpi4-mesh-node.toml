@@ -1,0 +1,20 @@
+[starter]
+schema = "io.styrene.nex.starter-profile.v1"
+id = "starter/arm64-rpi4-mesh-node"
+name = "Raspberry Pi 4 Mesh Node"
+version = "0.1.0"
+hardware_class = "arm64-rpi4"
+purpose = "mesh-node"
+nix_system = "aarch64-linux"
+description = "Raspberry Pi 4 mesh/MANET field node baseline."
+fragments = [
+  "core/essentials@0.1.0",
+  "platform/linux@0.1.0",
+  "hardware/rpi4@0.1.0",
+  "shell/bash@0.1.0",
+  "role/edge-node@0.1.0",
+  "role/mesh-node@0.1.0",
+]
+
+[starter.evidence]
+tier = "evaluates"

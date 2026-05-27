@@ -1,0 +1,20 @@
+[starter]
+schema = "io.styrene.nex.starter-profile.v1"
+id = "starter/amd64-cloud-base"
+name = "amd64 Cloud Base"
+version = "0.1.0"
+hardware_class = "amd64-generic"
+purpose = "cloud-base"
+nix_system = "x86_64-linux"
+description = "Generic x86_64 cloud image guest baseline for external image factories."
+fragments = [
+  "core/essentials@0.1.0",
+  "platform/linux@0.1.0",
+  "shell/bash@0.1.0",
+  "role/server@0.1.0",
+  "role/vm-guest@0.1.0",
+  "role/cloud-guest@0.1.0",
+]
+
+[starter.evidence]
+tier = "evaluates"

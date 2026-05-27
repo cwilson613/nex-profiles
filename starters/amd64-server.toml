@@ -1,0 +1,18 @@
+[starter]
+schema = "io.styrene.nex.starter-profile.v1"
+id = "starter/amd64-server"
+name = "amd64 Server"
+version = "0.1.0"
+hardware_class = "amd64-generic"
+purpose = "server"
+nix_system = "x86_64-linux"
+description = "Headless x86_64 Linux server baseline."
+fragments = [
+  "core/essentials@0.1.0",
+  "platform/linux@0.1.0",
+  "shell/bash@0.1.0",
+  "role/server@0.1.0",
+]
+
+[starter.evidence]
+tier = "evaluates"

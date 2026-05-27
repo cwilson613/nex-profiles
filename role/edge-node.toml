@@ -1,0 +1,33 @@
+# role/edge-node — constrained field/edge node baseline
+#
+# Requires: platform/linux
+
+[fragment]
+schema      = "io.styrene.nex.profile-fragment.v1"
+id          = "role/edge-node"
+name        = "edge-node"
+version     = "0.1.0"
+description = "Edge node — minimal headless field device defaults with SSH and aggressive cleanup"
+category    = "role"
+requires    = ["platform/linux"]
+platforms   = ["linux"]
+visibility  = "public"
+
+[packages]
+nix = [
+  "tmux",
+  "ncdu",
+  "rsync",
+]
+
+[linux.ssh]
+permit_root_login = false
+password_authentication = false
+
+[linux.services]
+sshd = true
+
+[linux.nix]
+gc_automatic = true
+gc_older_than = "3d"
+optimize_store = true

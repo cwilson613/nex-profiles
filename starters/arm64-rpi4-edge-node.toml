@@ -1,0 +1,19 @@
+[starter]
+schema = "io.styrene.nex.starter-profile.v1"
+id = "starter/arm64-rpi4-edge-node"
+name = "Raspberry Pi 4 Edge Node"
+version = "0.1.0"
+hardware_class = "arm64-rpi4"
+purpose = "edge-node"
+nix_system = "aarch64-linux"
+description = "Raspberry Pi 4 field/edge node baseline."
+fragments = [
+  "core/essentials@0.1.0",
+  "platform/linux@0.1.0",
+  "hardware/rpi4@0.1.0",
+  "shell/bash@0.1.0",
+  "role/edge-node@0.1.0",
+]
+
+[starter.evidence]
+tier = "evaluates"
