@@ -44,7 +44,6 @@ nix = [
 
 brews = [
   "rustup", "esptool",
-  "python@3.11", "python@3.12", "python@3.14",
   "qemu", "podman", "ollama", "weasyprint",
 ]
 
