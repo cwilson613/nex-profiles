@@ -1,0 +1,64 @@
+schema = "io.styrene.recording-rig.v1"
+id = "example-cover-rig"
+name = "Example Cover Recording Rig"
+sample_rate = 48000
+buffer_size = 128
+canvas_width = 1920
+canvas_height = 1080
+fps = 60
+
+[audio]
+backend = "coreaudio"
+interface_name = "Your Audio Interface"
+interface_uid = "REPLACE_WITH_INTERFACE_UID"
+bridge_name = "BlackHole 2ch"
+bridge_uid = "BlackHole2ch_UID"
+aggregate_name = "Interface + OBS"
+aggregate_uid = "io.example.interface-obs.aggregate"
+interface_channels = 8
+monitor_left = 1
+monitor_right = 2
+bridge_left = 9
+bridge_right = 10
+clock_master = "interface"
+drift_correct_bridge = true
+
+[tracks.vocals]
+name = "Vocal"
+inputs = [5]
+record_midi = false
+
+[tracks.drums]
+name = "Drums Audio"
+inputs = [1, 2]
+record_midi = true
+midi_track = "Drums MIDI"
+
+[video.main]
+name = "Main Camera"
+device_name = "REPLACE_WITH_MAIN_CAMERA"
+device_id = "REPLACE_WITH_MAIN_CAMERA_ID"
+
+[video.detail]
+name = "Detail Camera"
+device_name = "REPLACE_WITH_DETAIL_CAMERA"
+device_id = "REPLACE_WITH_DETAIL_CAMERA_ID"
+
+[video.pip]
+width = 576
+height = 324
+right_margin = 48
+bottom_margin = 48
+
+[obs]
+profile_name = "Recording 48k"
+collection_name = "Recording Rig"
+program_audio_name = "PROGRAM - DAW Mix"
+recording_path = "~/Movies"
+recording_format = "mkv"
+encoder = "apple_h264"
+
+[scenes]
+vocals = "VOCALS"
+drums = "DRUMS"
+safe = "SAFE"
